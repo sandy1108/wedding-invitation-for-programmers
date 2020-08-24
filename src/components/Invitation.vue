@@ -4,11 +4,11 @@
       <div class="invitation-cover">
         <div class="cover-content" :class="{'invitation-up':isOpening}">
           <div class="content-inside">
-            <img class="content-inside-photo" src="../images/photo.jpg">
+            <img class="content-inside-photo" src="../images/photo.png">
             <p>我们结婚啦！</p>
-            <p><b>Jun & undefined</b></p>
-            <p>时间：invalid date value</p>
-            <p>地点：<b>location can not be found</b></p>
+            <p><b>张一鹏 & 荀鹤</b></p>
+            <p>时间：2020年9月5日</p>
+            <p>地点：<b>山东，济南，舜和国际酒店</b></p>
             <div class="content-inside-bless">
               <input
                 placeholder="写下你的祝福" 
