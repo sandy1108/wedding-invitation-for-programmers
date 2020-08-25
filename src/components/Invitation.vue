@@ -5,10 +5,10 @@
         <div class="cover-content" :class="{'invitation-up':isOpening}">
           <div class="content-inside">
             <img class="content-inside-photo" src="../images/photo.png">
-            <p>我们结婚啦！</p>
+            <p>我们要结婚啦！</p>
             <p><b>张一鹏 & 荀鹤</b></p>
-            <p>时间：2020年9月5日</p>
-            <p>地点：<b>山东，济南，舜和国际酒店</b></p>
+            <p>时间：2020年9月5日 11:18</p>
+            <p>地点：<b>山东，济南，舜和国际酒店，4层娥皇厅</b></p>
             <div class="content-inside-bless">
               <input
                 placeholder="写下你的祝福" 

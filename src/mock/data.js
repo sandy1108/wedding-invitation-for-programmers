@@ -2,14 +2,15 @@ export default {
   code: 
 `
 // 今天心情好
-// 我给你表演写代码
+// 我给你表演写代码吧
 // 我要开始写啦
 const { 😆, 🤗 } = 🌎;
 😆.say('嫁给我吧!❤️');
 🤗.response('好的，只要你请我吃🍉！');
 Utils.marry(😆,🤗);
 Utils.generateInvitation(😆,🤗);
-// 好了我写完了
+// 好了我写完了，这是1.0版本，可能还有Bug哦
+// 改天有时间继续优化
 // 我要开始运行啦`,
   executions: [{
     name:'初始化',
