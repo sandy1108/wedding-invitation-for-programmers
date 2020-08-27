@@ -65,6 +65,7 @@ export default {
         }
         this.isOpening = false
         this.$refs.wishInput.blur()
+        
         setTimeout(() => {
           this.$emit('sendBarrage', this.wish)
         }, 660)

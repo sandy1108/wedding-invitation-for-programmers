@@ -38,9 +38,11 @@
   import Invitation from './Invitation'
   import Barrage from './Barrage'
 
+  import VueResource from 'vue-resource'
+
   export default {
     name: 'Editor',
-    components: { Executions, Invitation, Barrage },
+    components: { Executions, Invitation, Barrage, VueResource },
     data() {
       return {
         startDate: '',
@@ -108,9 +110,35 @@
       onAfterSending(wish) {
         this.wish = wish
         this.canOpen = false
-        setTimeout(() => {
-          this.canStart = true
-        }, 800)
+        this.postBarrage(wish, 
+          function(data){
+              this.canStart = true
+              window.console.log("提交弹幕结果："+data);
+          }, function(error){
+              window.console.log("提交弹幕错误："+error);
+          });
+        // setTimeout(() => {
+        //   this.canStart = true
+        // }, 800)
+      },
+      postBarrage(content, successCallback, errorCallback){ //提交弹幕评论
+          var url = "https://wedding.wsgh.pro/api/comments/post?visitor=guest&timestamp=123&content=" + content;
+          //请求
+          this.$http.post(url).then((response)=>{
+              successCallback(response);
+          },(error)=>{
+              errorCallback(error);
+          })
+      },
+      getBarrageList(){ //获取弹幕评论列表
+          var url = "https://wedding.wsgh.pro/api/comments/get";
+          //请求
+          this.$http.get(url).then((response)=>{
+              window.console.log("获取弹幕列表数据："+response);
+              
+          },(error)=>{
+              window.console.log("获取弹幕列表错误："+error);
+          })
       }
     }
   }
