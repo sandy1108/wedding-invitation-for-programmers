@@ -24,7 +24,7 @@
     </div>
     <Executions :canExecute="canExecute" @onUpdating="scrollToBottom" @onFinish="canOpen = true"/>
     <invitation :canOpen="canOpen" @onClose="canOpen = false, hasClosed = true" @sendBarrage="onAfterSending"/>
-    <Barrage :wish="wish" :canStart="canStart"/>
+    <Barrage ref="barrageCom" :wish="wish" :canStart="canStart" :webBarrages="[]"/>
   </div>
 </template>
 
@@ -38,11 +38,9 @@
   import Invitation from './Invitation'
   import Barrage from './Barrage'
 
-  import VueResource from 'vue-resource'
-
   export default {
     name: 'Editor',
-    components: { Executions, Invitation, Barrage, VueResource },
+    components: { Executions, Invitation, Barrage},
     data() {
       return {
         startDate: '',
@@ -111,15 +109,16 @@
         this.wish = wish
         this.canOpen = false
         this.postBarrage(wish, 
-          function(data){
-              this.canStart = true
+          (data)=>{
+              this.canStart = true;
+              if(data && data.data && data.data.data){
+                  this.$refs.barrageCom.onReceivedBarrages(data.data.data);
+              }
               window.console.log("提交弹幕结果："+data);
-          }, function(error){
+          }, (error)=>{
+              this.canStart = true;
               window.console.log("提交弹幕错误："+error);
           });
-        // setTimeout(() => {
-        //   this.canStart = true
-        // }, 800)
       },
       postBarrage(content, successCallback, errorCallback){ //提交弹幕评论
           var url = "https://wedding.wsgh.pro/api/comments/post?visitor=guest&timestamp=123&content=" + content;

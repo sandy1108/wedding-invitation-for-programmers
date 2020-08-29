@@ -22,7 +22,7 @@
   import data from '../mock/data'
 
   export default {
-    props: ['wish', 'canStart'],
+    props: ['wish', 'canStart', 'webBarrages'],
     data(){
       return {
         barrages: data.barrages,
@@ -43,6 +43,16 @@
       }
     },
     methods: {
+      onReceivedBarrages: function (data) {
+          if(data){
+              window.console.log("onReceivedBarrages: " + data);
+              var contentDataList = [];
+              data.forEach(element => {
+                  contentDataList.push(element.content);
+              });
+              this.barrages = contentDataList;
+          }
+      },
       // 弹幕动画开始
       barrageAnimationStart() {
         let barrageWidth = this.getWidth(this.$refs.barrage)
