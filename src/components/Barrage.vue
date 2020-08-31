@@ -2,7 +2,7 @@
   <div class="wedding-barrage" ref="barrage" :style="{opacity: canStart ? 1 : 0}">
     <div v-html="codeInStyleTag"></div>
     <p class="code barrage-0" ref="barrageFirst" :style="{transform:'translate('+initialOffset+'px)',top:'10px'}">
-      <span class="mine">{{ wish }}</span>
+      <span v-if="wish && wish != ''" class="mine">{{ wish }}</span>
       <span v-for="(item, index) in filterBarrage(barrages, 0)" :key="index">{{ item }}</span>
     </p>
     <p class="code barrage-1" ref="barrageSecond" :style="{transform:'translate('+initialOffset+'px)',top:'40px'}">
@@ -45,6 +45,7 @@
     methods: {
       onReceivedBarrages: function (data) {
           if(data){
+              // 如果数据有效不为空，则将其替代默认的弹幕列表。
               window.console.log("onReceivedBarrages: " + data);
               var contentDataList = [];
               data.forEach(element => {

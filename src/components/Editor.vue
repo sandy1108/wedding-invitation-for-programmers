@@ -23,7 +23,7 @@
       </svg>
     </div>
     <Executions :canExecute="canExecute" @onUpdating="scrollToBottom" @onFinish="canOpen = true"/>
-    <invitation :canOpen="canOpen" @onClose="canOpen = false, hasClosed = true" @sendBarrage="onAfterSending"/>
+    <invitation :canOpen="canOpen" @onClose="onAfterClose" @sendBarrage="onAfterSending"/>
     <Barrage ref="barrageCom" :wish="wish" :canStart="canStart" :webBarrages="[]"/>
   </div>
 </template>
@@ -104,38 +104,50 @@
           typing = requestAnimationFrame(step)
         })
       },
+      onAfterClose(){
+        this.canOpen = false;
+        this.hasClosed = true;
+        // 走发送空弹幕的逻辑
+        this.onAfterSending();
+      },
       // 发送弹幕之后
       onAfterSending(wish) {
-        this.wish = wish
-        this.canOpen = false
-        this.postBarrage(wish, 
-          (data)=>{
-              this.canStart = true;
-              if(data && data.data && data.data.data){
-                  this.$refs.barrageCom.onReceivedBarrages(data.data.data);
-              }
-              window.console.log("提交弹幕结果："+data);
-          }, (error)=>{
-              this.canStart = true;
-              window.console.log("提交弹幕错误："+error);
-          });
+        this.wish = wish;
+        this.canOpen = false;
+        let successCallback = (response)=>{
+            this.canStart = true;
+            if(response && response.data && response.data.data){
+                this.$refs.barrageCom.onReceivedBarrages(response.data.data);
+            }
+        };
+        let errorCallback = (error)=>{
+            this.canStart = true;
+        };
+        if(wish && wish != ''){
+          this.postBarrage(wish, successCallback, errorCallback);
+        }else{
+          this.getBarrageList(successCallback, errorCallback)
+        }
       },
       postBarrage(content, successCallback, errorCallback){ //提交弹幕评论
           var url = "https://wedding.wsgh.pro/api/comments/post?visitor=guest&timestamp=123&content=" + content;
           //请求
           this.$http.post(url).then((response)=>{
               successCallback(response);
+              window.console.log("提交弹幕结果："+response);
           },(error)=>{
               errorCallback(error);
+              window.console.log("提交弹幕错误："+error);
           })
       },
-      getBarrageList(){ //获取弹幕评论列表
+      getBarrageList(successCallback, errorCallback){ //获取弹幕评论列表
           var url = "https://wedding.wsgh.pro/api/comments/get";
           //请求
           this.$http.get(url).then((response)=>{
+              successCallback(response);
               window.console.log("获取弹幕列表数据："+response);
-              
           },(error)=>{
+              errorCallback(error);
               window.console.log("获取弹幕列表错误："+error);
           })
       }
