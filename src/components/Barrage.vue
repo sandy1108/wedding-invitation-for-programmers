@@ -22,7 +22,7 @@
   import data from '../mock/data'
 
   export default {
-    props: ['wish', 'canStart', 'webBarrages'],
+    props: ['wish', 'canStart'],
     data(){
       return {
         barrages: data.barrages,
@@ -46,9 +46,10 @@
       onReceivedBarrages: function (data) {
           if(data){
               // 如果数据有效不为空，则将其替代默认的弹幕列表。
-              window.console.log("onReceivedBarrages: " + data);
+              window.console.log("onReceivedBarrages: " + data, data.length);
               var contentDataList = [];
               data.forEach(element => {
+                  console.log(element);//eslint-disable-line
                   contentDataList.push(element.content);
               });
               this.barrages = contentDataList;
@@ -56,42 +57,47 @@
       },
       // 弹幕动画开始
       barrageAnimationStart() {
-        let barrageWidth = this.getWidth(this.$refs.barrage)
-        let barrageWidthGroup = [
-              this.getWidth(this.$refs.barrageFirst),
-              this.getWidth(this.$refs.barrageSecond),
-              this.getWidth(this.$refs.barrageThird),
-              this.getWidth(this.$refs.barrageFourth)
-            ]
-        this.initialOffset = barrageWidth + 15
-        barrageWidthGroup.map((item,index) => {
-          this.animationStyle += `
-            .barrage-${index}{
-              animation: barrage-${index} ${item/40}s linear infinite;
-              -webkit-animation: barrage-${index} ${item/40}s linear infinite;
-            }
-            @keyframes barrage-${index} {
-              from {
-                transform:translate3d(${barrageWidth+15}px,0,0);
-                -webkit-transform:translate3d(${barrageWidth+15}px,0,0);
+        this.$nextTick(() => {
+          let barrageWidth = this.getWidth(this.$refs.barrage)
+          let barrageWidthGroup = [
+                this.getWidth(this.$refs.barrageFirst),
+                this.getWidth(this.$refs.barrageSecond),
+                this.getWidth(this.$refs.barrageThird),
+                this.getWidth(this.$refs.barrageFourth)
+              ]
+          console.log(barrageWidth, barrageWidthGroup);//eslint-disable-line
+          this.initialOffset = barrageWidth + 15
+          barrageWidthGroup.map((item,index) => {
+            this.animationStyle += `
+              .barrage-${index}{
+                animation: barrage-${index} ${item/40}s linear infinite;
+                -webkit-animation: barrage-${index} ${item/40}s linear infinite;
               }
-              to {
-                transform:translate3d(-${item+15}px,0,0);
-                -webkit-transform:translate3d(-${item+15}px,0,0);
-              }
-            }`
+              @keyframes barrage-${index} {
+                from {
+                  transform:translate3d(${barrageWidth+15}px,0,0);
+                  -webkit-transform:translate3d(${barrageWidth+15}px,0,0);
+                }
+                to {
+                  transform:translate3d(-${item+15}px,0,0);
+                  -webkit-transform:translate3d(-${item+15}px,0,0);
+                }
+              }`
+          })
         })
       },
       getWidth(ref) {
-        return window.getComputedStyle(ref,null).width.replace('px','') - 0
+        return ref.offsetWidth;
       },
       filterBarrage(barrages, remainder) {
         if(barrages){
-          return barrages.filter((barrage, index) => {
+          const a =  barrages.filter((barrage, index) => {
             if(index%4 === remainder){
               return barrage
             }
           })
+          console.log(a.length);//eslint-disable-line
+          return a;
         }
       }
     }

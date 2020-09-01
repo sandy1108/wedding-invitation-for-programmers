@@ -24,7 +24,7 @@
     </div>
     <Executions :canExecute="canExecute" @onUpdating="scrollToBottom" @onFinish="canOpen = true"/>
     <invitation :canOpen="canOpen" @onClose="onAfterClose" @sendBarrage="onAfterSending"/>
-    <Barrage ref="barrageCom" :wish="wish" :canStart="canStart" :webBarrages="[]"/>
+    <Barrage ref="barrageCom" :wish="wish" :canStart="canStart"/>
   </div>
 </template>
 
@@ -120,7 +120,7 @@
                 this.$refs.barrageCom.onReceivedBarrages(response.data.data);
             }
         };
-        let errorCallback = (error)=>{
+        let errorCallback = ()=>{
             this.canStart = true;
         };
         if(wish && wish != ''){

@@ -4,11 +4,13 @@
       <div class="invitation-cover">
         <div class="cover-content" :class="{'invitation-up':isOpening}">
           <div class="content-inside">
-            <img class="content-inside-photo" src="../images/photo.png">
-            <p>我们要结婚啦！</p>
+            <img class="content-inside-photo" src="../images/photo.jpg">
+            <p>我们要结婚啦~</p>
             <p><b>张一鹏 & 荀鹤</b></p>
             <p>时间：2020年9月5日 11:18</p>
-            <p>地点：<b>山东，济南，舜和国际酒店，4层娥皇厅</b></p>
+            <p>地点：山东济南<br/>
+              舜和国际酒店&nbsp;4层娥皇厅</p>
+            <p>欢迎大家来参加我们婚礼鸭~</p>
             <div class="content-inside-bless">
               <input
                 placeholder="写下你的祝福" 
@@ -20,8 +22,8 @@
               >
               <p v-if="!wish && isFocused && hasEntered">请输入祝福哦</p>
               <div>
-                <button @click="sendBarrage">发送祝福弹幕</button>
-                <button @click="closeInvitation">关闭</button>
+                <button @click="sendBarrage">发弹幕</button>
+                <button @click="closeInvitation">不发啦</button>
               </div>
             </div>
           </div>
@@ -67,7 +69,8 @@ export default {
         this.$refs.wishInput.blur()
         
         setTimeout(() => {
-          this.$emit('sendBarrage', this.wish)
+          this.$emit('sendBarrage', this.wish);
+          this.wish = '';
         }, 660)
       })
     }
